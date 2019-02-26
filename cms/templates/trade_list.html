@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% load bootstrap4 %}
+{% bootstrap_css %}
+{% bootstrap_javascript jquery='full' %}
+{{ form.media }}
+{% block title %}取引の一覧{% endblock title %}
+{% block content %}
+    <h4 class="mt-4 border-bottom">取引の一覧</h4>
+    <a href="{% url 'cms:trade_search' %}" class="btn btn-primary btn-sm my-3">検索</a>
+    {% if op == 0 %}
+    <a href="{% url 'cms:trade_add' %}" class="btn btn-secondary btn-sm">追加</a>
+    {% else %}
+    <a href="{% url 'cms:trade_list' %}" class="btn btn-secondary btn-sm">戻る</a>
+    {% endif %}
+    <table class="table table-striped table-bordered">
+      <thead>
+        <tr>
+          <th scope="col">ID</th>
+          <th scope="col">日付</th>
+          <th scope="col">品目名</th>
+          <th scope="col">取引先</th>
+          <th scope="col">金額</th>
+          <th scope="col">通貨</th>
+          <th scope="col">操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for trade in trades %}
+        <tr>
+          <th scope="row">{{ trade.id }}</th>
+          <td>{{ trade.date }}</td>
+          <td>{{ trade.name }}</td>
+          <td>{{ trade.supplier }}</td>
+          <td>{{ trade.price }}</td>
+          <td>{{ trade.currency }}</td>
+          <td>
+            <a href="{% url 'cms:trade_mod' id=trade.id %}" class="btn btn-outline-primary btn-sm">修正</a>
+            <a href="{% url 'cms:trade_del' id=trade.id %}" class="btn btn-outline-danger btn-sm">削除</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <a href="{% url 'cms:export' %}" class="btn btn-secondary btn-sm">出力</a>
+{% endblock content %}

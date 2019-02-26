@@ -1,0 +1,55 @@
+{% load bootstrap4 %}
+{% bootstrap_css %}
+{% bootstrap_javascript jquery='full' %}
+{{ form.media }}
+{% load i18n static %}
+
+<!DOCTYPE html>{% get_current_language as LANGUAGE_CODE %}
+<html lang="{{ LANGUAGE_CODE|default:"en-us" }}">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link rel="stylesheet" href="{% static 'cms/css/bootstrap.min.css' %}">
+{% block extra_css %}{% endblock %}
+<title>{% block title %}My Trades{% endblock %}</title>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="{% url 'cms:trade_list' %}">Money Note</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        {% if user.is_authenticated %}
+        <li>
+            <a class="nav-item nav-link" href="{% url 'cms:user_detail' user.pk %}">ユーザー情報閲覧</a>
+          </li>
+          <li>
+            <a class="nav-item nav-link" href="{% url 'cms:user_update' user.pk %}">ユーザー情報更新</a>
+          </li>
+          <li>
+            <a class="nav-item nav-link" href="{% url 'cms:logout' %}">ログアウト</a>
+          </li>
+          <li>
+            <a class="nav-item nav-link" href="{% url 'cms:password_change' %}">パスワードの変更</a>
+          </li>
+        {% else %}
+        <li class="nav-item">
+          <a class="nav-item nav-link" href="{% url 'cms:login' %}">
+          ログインはこちら
+        </a>
+        </li>
+        {% endif %}
+      </ul>
+    </div>
+  </nav>  
+  <div class="container">
+    {% block content %}
+      {{ content }}
+    {% endblock %}
+  </div>
+{% block extra_js %}{% endblock %}
+</body>
+</html>
